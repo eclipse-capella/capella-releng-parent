@@ -135,7 +135,7 @@
 		  <goal>archive-repository</goal>
 		</goals>
 		<configuration>
-		  <finalName>${packagedSiteName}.site-${unqualifiedVersion}.${buildQualifier}</finalName>
+		  <finalName>${packagedSiteName}-site-${unqualifiedVersion}.${buildQualifier}</finalName>
 		</configuration>
 	      </execution>
 	    </executions>
