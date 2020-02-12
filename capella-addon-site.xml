@@ -16,19 +16,18 @@
   <parent>
     <groupId>org.polarsys</groupId>
     <artifactId>capella-addon</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <relativePath>capella-addon.xml</relativePath>
   </parent>
 
   <name>Capella Addon Site Parent</name>
   <artifactId>capella-addon-site</artifactId>
   <packaging>pom</packaging>
-  
+
   <properties>
     <!-- basename for dropins zip file -->
     <packagedSiteName>${project.artifactId}</packagedSiteName>
   </properties>
-
 
   <!-- this profile auto-activates if this is really an update site artifact.
        I don't want to run the plugins below when *this* pom itself is deployed -->
