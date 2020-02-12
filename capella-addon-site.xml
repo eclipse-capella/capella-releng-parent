@@ -130,7 +130,7 @@
 	    <executions>
 	      <execution>
 		<phase>package</phase>
-		<id>archive-repository</id>
+		<id>default-archive-repository</id>
 		<goals>
 		  <goal>archive-repository</goal>
 		</goals>
