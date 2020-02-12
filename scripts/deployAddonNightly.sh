@@ -89,6 +89,7 @@ SITE_DST="$SERVER_BASEPATH/$ADDON/updates/nightly/$BRANCH/$TIMESTAMP"
 SITE_ZIP_DST="$SERVER_BASEPATH/$ADDON/zips/nightly/$BRANCH/"
 SITE_FILES="$SITE_DIR"/repository/*
 
+set -x
 ssh $SERVER mkdir -p "$SITE_DST"
 scp -pr $SITE_FILES $SERVER:"$SITE_DST"
 ssh $SERVER mkdir -p "$SITE_ZIP_DST"
