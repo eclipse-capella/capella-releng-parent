@@ -29,7 +29,7 @@
   <properties>
     <target-definition-groupId>org.polarsys</target-definition-groupId>
     <target-definition-classifier>${target-definition-artifactId}</target-definition-classifier>
-    <target-definition-version>1.4.0-SNAPSHOT</target-definition-version>
+    <target-definition-version>1.4.1-SNAPSHOT</target-definition-version>
   </properties>
 
   <build>
