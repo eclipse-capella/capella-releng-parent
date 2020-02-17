@@ -66,7 +66,7 @@
 	</configuration>
       </plugin>
 
- 
+
       <!-- enable source feature generation -->
       <plugin>
 	<groupId>org.eclipse.tycho.extras</groupId>
@@ -108,6 +108,24 @@
 	    </goals>
 	  </execution>
 	</executions>
+      </plugin>
+      <plugin>
+	<groupId>org.eclipse.tycho</groupId>
+	<artifactId>tycho-packaging-plugin</artifactId>
+	<version>${tycho-version}</version>
+	<configuration>
+	  <!--<strictBinIncludes>false</strictBinIncludes>-->
+	  <sourceReferences>
+	    <generate>true</generate>
+	  </sourceReferences>
+	</configuration>
+	<dependencies>
+	  <dependency>
+	    <groupId>org.eclipse.tycho.extras</groupId>
+	    <artifactId>tycho-sourceref-jgit</artifactId>
+	    <version>${tycho-extras-version}</version>
+	  </dependency>
+	</dependencies>
       </plugin>
     </plugins>
 
