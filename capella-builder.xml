@@ -114,7 +114,6 @@
 	<artifactId>tycho-packaging-plugin</artifactId>
 	<version>${tycho-version}</version>
 	<configuration>
-	  <!--<strictBinIncludes>false</strictBinIncludes>-->
 	  <sourceReferences>
 	    <generate>true</generate>
 	  </sourceReferences>
