@@ -30,6 +30,7 @@
     <target-definition-groupId>org.polarsys</target-definition-groupId>
     <target-definition-classifier>${target-definition-artifactId}</target-definition-classifier>
     <target-definition-version>1.5.0-SNAPSHOT</target-definition-version>
+    <packagedSiteName>${project.artifactId}</packagedSiteName>
   </properties>
 
   <build>
@@ -242,6 +243,117 @@
 	  </snapshots>
 	</pluginRepository>
       </pluginRepositories>
+    </profile>
+
+    <!-- this profile auto-activates if this is an eclipse update site artifact -->
+    <profile>
+      <id>zip-repo-and-make-dropins</id>
+      <activation>
+	<file>
+	  <exists>
+	    category.xml
+	  </exists>
+	</file>
+      </activation>
+      <build>
+	<plugins>
+	  <plugin>
+	    <groupId>org.eclipse.tycho.extras</groupId>
+	    <artifactId>tycho-eclipserun-plugin</artifactId>
+	    <version>${tycho-extras-version}</version>
+	    <configuration>
+	      <repositories>
+		<repository>
+		  <id>eclipse-repo</id>
+		  <layout>p2</layout>
+		  <url>${eclipse-repo.url}</url>
+		</repository>
+	      </repositories>
+	      <dependencies>
+		<dependency>
+		  <artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+		  <type>eclipse-plugin</type>
+		</dependency>
+		<dependency>
+		  <artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+		  <type>eclipse-feature</type>
+		</dependency>
+		<dependency>
+		  <artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
+		  <type>eclipse-feature</type>
+		</dependency>
+		<dependency>
+		  <artifactId>org.eclipse.equinox.ds</artifactId>
+		  <type>eclipse-plugin</type>
+		</dependency>
+	      </dependencies>
+	      <executionEnvironment>JavaSE-1.8</executionEnvironment>
+	    </configuration>
+	    <executions>
+	      <execution>
+		<id>create-dropins</id>
+		<phase>package</phase>
+		<goals>
+		  <goal>eclipse-run</goal>
+		</goals>
+		<configuration>
+		  <appArgLine>-application org.eclipse.equinox.p2.repository.repo2runnable -source file:"${project.build.directory}/repository" -destination "${project.build.directory}/${packagedSiteName}/eclipse"</appArgLine>
+		</configuration>
+	      </execution>
+	    </executions>
+	  </plugin>
+	  <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-antrun-plugin</artifactId>
+	    <version>${antrun-version}</version>
+	    <executions>
+	      <execution>
+		<id>package-dropins</id>
+		<phase>package</phase>
+		<goals>
+		  <goal>run</goal>
+		</goals>
+		<configuration>
+		  <target>
+		    <delete
+			file="${project.build.directory}/${packagedSiteName}/eclipse/artifacts.jar" />
+		    <delete
+			file="${project.build.directory}/${packagedSiteName}/eclipse/content.jar" />
+		    <delete includeemptydirs="true">
+		      <fileset
+			  dir="${project.build.directory}/${packagedSiteName}/eclipse/features"
+			  includes="**/META-INF/**" />
+		    </delete>
+		    <zip
+			destfile="${project.build.directory}/${packagedSiteName}-dropins-${unqualifiedVersion}.${buildQualifier}.zip">
+		      <fileset dir="${project.build.directory}">
+			<include name="${packagedSiteName}/**" />
+		      </fileset>
+		    </zip>
+		  </target>
+		</configuration>
+	      </execution>
+	    </executions>
+	  </plugin>
+	  <plugin>
+	    <groupId>org.eclipse.tycho</groupId>
+	    <artifactId>tycho-p2-repository-plugin</artifactId>
+	    <version>${tycho-version}</version>
+	    <executions>
+	      <execution>
+		<phase>package</phase>
+		<id>default-archive-repository</id>
+		<goals>
+		  <goal>archive-repository</goal>
+		</goals>
+		<configuration>
+		  <finalName>${packagedSiteName}-site-${unqualifiedVersion}.${buildQualifier}</finalName>
+		</configuration>
+	      </execution>
+	    </executions>
+	  </plugin>
+	</plugins>
+      </build>
     </profile>
   </profiles>
 
