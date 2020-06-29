@@ -10,7 +10,7 @@
  *******************************************************************************/
 target "Default Capella Addon"
 
-include "https://raw.githubusercontent.com/eclipse/capella/v1.3.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+include "https://raw.githubusercontent.com/felixdo/capella/v1.3.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
 
 with source, requirements
 
