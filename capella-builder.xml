@@ -247,13 +247,74 @@
 
     <!-- this profile auto-activates if this is an eclipse update site artifact -->
     <profile>
-      <id>zip-repo-and-make-dropins</id>
+      <id>archiveRepository</id>
       <activation>
 	<file>
 	  <exists>
 	    category.xml
 	  </exists>
 	</file>
+      </activation>
+      <build>
+	
+	
+	<!--
+      Ideally we'd want to be able to run the assemble-repository goal of tycho-p2-repository-plugin first, Groovy next (to add the missing references to content.xml) and the archive-repository goal of tycho-p2-repository-plugin to create a zip archive of the update site. I've tried to achieve this with Maven <executions> but without much success. Therefore, I've turned skipArchive to true and zipped the update site using Groovy.
+      -->
+	<plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <includeAllDependencies>false</includeAllDependencies>
+          <compress>false</compress>
+          <xzCompress>false</xzCompress>
+          <skipArchive>true</skipArchive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.13</version>
+            <type>jar</type>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>releng/capella-releng-parent/patch-content-xml-and-zip-site.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+       </plugin>
+      </plugins>
+      </build>
+    </profile>
+
+	<!-- Only way I found to conditionally build dropins. To turn on, touch a file createDropins.txt in your
+	     site module -->
+     <profile>
+      <id>createDropins</id>
+      <activation>
+      	<file>
+	   <exists>
+	    createDropins.txt
+	  </exists>
+	  </file>
       </activation>
       <build>
 	<plugins>
@@ -335,26 +396,10 @@
 	      </execution>
 	    </executions>
 	  </plugin>
-	  <plugin>
-	    <groupId>org.eclipse.tycho</groupId>
-	    <artifactId>tycho-p2-repository-plugin</artifactId>
-	    <version>${tycho-version}</version>
-	    <executions>
-	      <execution>
-		<phase>package</phase>
-		<id>default-archive-repository</id>
-		<goals>
-		  <goal>archive-repository</goal>
-		</goals>
-		<configuration>
-		  <finalName>${packagedSiteName}-site-${unqualifiedVersion}.${buildQualifier}</finalName>
-		</configuration>
-	      </execution>
-	    </executions>
-	  </plugin>
 	</plugins>
       </build>
     </profile>
+
   </profiles>
 
 </project>
