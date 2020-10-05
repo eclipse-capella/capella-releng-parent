@@ -296,7 +296,8 @@
               <goal>execute</goal>
             </goals>
             <configuration>
-              <source>releng/capella-releng-parent/patch-content-xml-and-zip-site.groovy</source>
+              <!--  FIXME this assumes the site dir is a sibling of the releng-parent dir -->
+              <source>${project.basedir}/../capella-releng-parent/patch-content-xml-and-zip-site.groovy</source>
             </configuration>
           </execution>
         </executions>
