@@ -90,9 +90,14 @@ SITE_ZIP_DST="$SERVER_BASEPATH/$ADDON/zips/nightly/$BRANCH/"
 SITE_FILES="$SITE_DIR"/repository/*
 
 set -x
-ssh $SERVER mkdir -p "$SITE_DST"
-scp -pr $SITE_FILES $SERVER:"$SITE_DST"
-ssh $SERVER mkdir -p "$SITE_ZIP_DST"
-scp "$SITE_ZIP" $SERVER:"$SITE_ZIP_DST"
+ssh $SERVER mkdir -p "$SITE_DST" || exit 1
+scp -pr $SITE_FILES $SERVER:"$SITE_DST" || exit 1
+ssh $SERVER mkdir -p "$SITE_ZIP_DST" || exit 1
+scp "$SITE_ZIP" $SERVER:"$SITE_ZIP_DST" || exit 1
 
-[[ -n "$DROPINS_ZIP" ]] && scp "$DROPINS_ZIP" $SERVER:"$SITE_ZIP_DST"
+if [[ -n "$DROPINS_ZIP" ]] 
+then 
+	scp "$DROPINS_ZIP" $SERVER:"$SITE_ZIP_DST" || exit 1
+fi
+
+true
