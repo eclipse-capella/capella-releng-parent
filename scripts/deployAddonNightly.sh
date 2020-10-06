@@ -85,15 +85,20 @@ echo Site zip: $SITE_ZIP
 
 [[ -n $DROPINS_ZIP ]] && echo Dropins zip: $DROPINS_ZIP
 
-SITE_DST="$SERVER_BASEPATH/$ADDON/updates/nightly/$BRANCH/$TIMESTAMP"
+BRANCH_DST="$SERVER_BASEPATH/$ADDON/updates/nightly/$BRANCH"
+SITE_DST="$BRANCH_DST/$TIMESTAMP"
+LINK_DST="$BRANCH_DST/latest"
 SITE_ZIP_DST="$SERVER_BASEPATH/$ADDON/zips/nightly/$BRANCH/"
 SITE_FILES="$SITE_DIR"/repository/*
 
 set -x
 ssh $SERVER mkdir -p "$SITE_DST" || exit 1
 scp -pr $SITE_FILES $SERVER:"$SITE_DST" || exit 1
+ssh $SERVER ln -snf "$SITE_DST" "$LINK_DST" || exit 1
+
 ssh $SERVER mkdir -p "$SITE_ZIP_DST" || exit 1
 scp "$SITE_ZIP" $SERVER:"$SITE_ZIP_DST" || exit 1
+
 
 if [[ -n "$DROPINS_ZIP" ]] 
 then 
