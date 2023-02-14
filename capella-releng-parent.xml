@@ -16,7 +16,7 @@ Thales - initial API and implementation
   <name>Capella Releng Parent</name>
   <groupId>org.polarsys</groupId>
   <artifactId>capella-releng-parent</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>6.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
