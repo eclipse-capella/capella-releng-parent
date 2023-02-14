@@ -10,17 +10,17 @@
  *******************************************************************************/
 target "Default Capella Addon"
 
-include "https://raw.githubusercontent.com/eclipse/capella/v5.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+include "https://raw.githubusercontent.com/eclipse/capella/master/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
 
 with source, requirements
 
-location capella-v5.2.0 "https://download.eclipse.org/capella/core/updates/releases/5.2.0-R20211130-125709/org.polarsys.capella.rcp.site/" {
+location capella-v6.x "https://download.eclipse.org/capella/core/updates/nightly/master/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.rcp.feature.group lazy
 	org.polarsys.capella.cdo.mock.feature.feature.group lazy
 				
 }
 
-location capella-tests-v5.2.0 "https://download.eclipse.org/capella/core/updates/releases/5.2.0-R20211130-125709/org.polarsys.capella.test.site/" {
+location capella-tests-v6.x "https://download.eclipse.org/capella/core/updates/nightly/master/org.polarsys.capella.test.site/" {
 	 org.polarsys.capella.test.feature.feature.group lazy
 }
 
